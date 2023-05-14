@@ -1,0 +1,11 @@
+.minesweeper__menu {
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 50px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffff00;
+  user-select: none;
+}

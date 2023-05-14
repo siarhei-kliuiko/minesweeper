@@ -1,0 +1,18 @@
+@import "../common/mixins";
+
+.bush {
+  height: 92px;
+  width: 120px;
+  background-image: url(../../assets/images/bush.png);
+  background-size: 100% 100%;
+  @include add-wiggle-animation-on-hover;
+  cursor: pointer;
+}
+
+.minesweeper__bush {
+  align-self: flex-end;
+}
+
+.bush_animation_idle {
+  @include add-wiggle-animation;
+}

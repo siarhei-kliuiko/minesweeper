@@ -1,0 +1,34 @@
+@mixin add-wiggle-animation {
+  transform-origin: bottom;
+  animation: wiggle 3s infinite;
+
+  @keyframes wiggle {
+
+    5% {
+      transform: skewX(5deg);
+    }
+
+    10% {
+      transform: skewX(-5deg);
+    }
+
+    15%,
+    100% {
+      transform: none;
+    }
+
+  }
+
+}
+
+@mixin add-wiggle-animation-on-hover {
+
+  @media (hover: hover) {
+
+    &:hover {
+      @include add-wiggle-animation;
+    }
+
+  }
+
+}
