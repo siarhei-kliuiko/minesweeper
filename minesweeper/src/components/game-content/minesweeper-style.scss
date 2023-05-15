@@ -1,4 +1,6 @@
+@import "../common/variables.scss";
+
 .minesweeper {
-  padding: 40px;
+  padding: $minesweeper-padding;
   background: url(../../assets/images/game-background.jpg);
 }

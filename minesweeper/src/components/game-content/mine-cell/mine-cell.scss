@@ -1,0 +1,8 @@
+@import "../../common/mixins.scss";
+
+.minesweeper__mine-cell {
+  background-image: url(../../../assets/images/leaf.png);
+  background-size: 100% 100%;
+  cursor: pointer;
+  @include add-wiggle-animation-on-hover;
+}
