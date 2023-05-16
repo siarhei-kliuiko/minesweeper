@@ -1,9 +1,8 @@
 .minesweeper__menu {
   height: 180px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  column-gap: 50px;
   font-size: 60px;
   font-weight: bold;
   color: #ffff00;

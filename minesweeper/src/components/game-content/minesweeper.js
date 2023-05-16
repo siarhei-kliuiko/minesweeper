@@ -1,12 +1,9 @@
 import './minesweeper-style.scss';
-import MinesweeperMenu from './menu/menu';
-import MinesweeperMineField from './mine-field/mine-field';
 
-const minesweeper = document.createElement('div');
-minesweeper.className = 'minesweeper';
-const menu = new MinesweeperMenu();
-minesweeper.append(menu.htmlElement);
-const mineField = new MinesweeperMineField(10);
-minesweeper.append(mineField.htmlElement);
+const createMinesweeper = () => {
+  const minesweeper = document.createElement('div');
+  minesweeper.className = 'minesweeper';
+  return minesweeper;
+};
 
-export default minesweeper;
+export default createMinesweeper;

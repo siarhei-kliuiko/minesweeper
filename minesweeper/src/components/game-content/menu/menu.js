@@ -10,8 +10,15 @@ export default class MinesweeperMenu {
     this.secondsCounter = new SecondsCounter('minesweeper__seconds-counter');
     this.htmlElement.append(this.secondsCounter.htmlElement);
     this.bush = createBush('minesweeper__bush');
+    this.bush.addEventListener('click', this.onBushClick.bind(this));
     this.htmlElement.append(this.bush);
     this.clicksCounter = new ClicksCounter('minesweeper__clicks-counter');
     this.htmlElement.append(this.clicksCounter.htmlElement);
+  }
+
+  onBushClick() {
+    this.bush.classList.remove('bush_animation_idle');
+    this.bushClicked();
+    this.bush.removeEventListener('click', this.onBushClick);
   }
 }

@@ -4,11 +4,13 @@ $mine-field-margin-top: 25px;
 
 .minesweeper__mine-field {
   margin-top: $mine-field-margin-top;
-  width: clamp(500px, 100vh - ($minesweeper-menu-height + $mine-field-margin-top + ($minesweeper-padding * 2)), 100vw);
-  height: clamp(500px, 100vh - ($minesweeper-menu-height + $mine-field-margin-top + ($minesweeper-padding * 2)), 100vw);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.minesweeper__mine-field_disabled {
+  pointer-events: none;
 }
 
 .minesweeper__mine-field-row {
