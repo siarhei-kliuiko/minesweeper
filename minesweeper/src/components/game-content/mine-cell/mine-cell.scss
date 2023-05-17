@@ -1,8 +1,74 @@
 @import "../../common/mixins.scss";
 
 .minesweeper__mine-cell {
-  background-image: url(../../../assets/images/leaf.png);
+  position: relative;
   background-size: 100% 100%;
+}
+
+.minesweeper__mine-cell_type_closed {
   cursor: pointer;
+  background-image: url(../../../assets/images/leaf.png);
   @include add-wiggle-animation-on-hover;
+}
+
+.minesweeper__mine-cell_type_mine {
+  background-image: url(../../../assets/images/poo.png);
+}
+
+.minesweeper__mine-cell::before {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.minesweeper__mine-cell_type_closed::before,
+.minesweeper__mine-cell_type_empty::before {
+  content: "0";
+  opacity: 0;
+}
+
+.minesweeper__mine-cell_type_one::before {
+  content: "1";
+  color: #0000ff;
+}
+
+.minesweeper__mine-cell_type_two::before {
+  content: "2";
+  color: #ffe600;
+}
+
+.minesweeper__mine-cell_type_three::before {
+  content: "3";
+  color: #ff0000;
+}
+
+.minesweeper__mine-cell_type_four::before {
+  content: "4";
+  color: #ae00ff;
+}
+
+.minesweeper__mine-cell_type_five::before {
+  content: "5";
+  color: #ff5e00;
+}
+
+.minesweeper__mine-cell_type_six::before {
+  content: "6";
+  color: #00f7ff;
+}
+
+.minesweeper__mine-cell_type_seven::before {
+  content: "7";
+  color: #000000;
+}
+
+.minesweeper__mine-cell_type_eight::before {
+  content: "8";
+  color: #bbbbbb;
 }

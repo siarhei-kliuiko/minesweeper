@@ -1,8 +1,6 @@
 import './mine-cell.scss';
 
 export const cellTypes = {
-  flag: 'minesweeper__mine-cell_type_flag',
-  mine: 'minesweeper__mine-cell_type_mine',
   empty: 'minesweeper__mine-cell_type_empty',
   one: 'minesweeper__mine-cell_type_one',
   two: 'minesweeper__mine-cell_type_two',
@@ -12,11 +10,15 @@ export const cellTypes = {
   six: 'minesweeper__mine-cell_type_six',
   seven: 'minesweeper__mine-cell_type_seven',
   eight: 'minesweeper__mine-cell_type_eight',
+  closed: 'minesweeper__mine-cell_type_closed',
+  flag: 'minesweeper__mine-cell_type_flag',
+  mine: 'minesweeper__mine-cell_type_mine',
 };
 
 export class MineCell {
   constructor(htmlElement) {
-    const className = 'minesweeper__mine-cell';
+    const className = `minesweeper__mine-cell ${cellTypes.closed}`;
+    this.type = 0;
     if (htmlElement) {
       this.htmlElement = htmlElement;
     } else {
@@ -27,12 +29,9 @@ export class MineCell {
     this.isOpened = false;
   }
 
-  setType(type) {
-    this.type = type;
-  }
-
   open() {
     this.isOpened = true;
+    this.htmlElement.classList.remove(cellTypes.closed);
     this.htmlElement.classList.add(this.type);
   }
 }

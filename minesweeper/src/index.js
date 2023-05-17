@@ -29,8 +29,19 @@ const fitMineFieldToScreen = () => {
     currentPixelRatio = newPixelRatio;
   }
 };
+
 fitMineFieldToScreen();
+mineField.adjustFontSize();
+
 window.addEventListener('resize', fitMineFieldToScreen);
+
+const fillMineField = (event) => {
+  const targetCell = event.target.closest('.minesweeper__mine-cell');
+  if (targetCell && event.button === 0) {
+    mineField.placeMines(10, targetCell);
+    mineField.htmlElement.removeEventListener('mousedown', fillMineField);
+  }
+};
 
 const startNewGame = () => {
   mineField.disable();
@@ -43,6 +54,7 @@ const startNewGame = () => {
     dog.goForAWalk(1, () => {
       dog.htmlElement.remove();
       mineField.enable();
+      mineField.htmlElement.addEventListener('mousedown', fillMineField);
     }, bushDimensions.left, bushDimensions.top);
   });
 };
