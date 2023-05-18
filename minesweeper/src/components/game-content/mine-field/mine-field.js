@@ -165,12 +165,17 @@ export default class MinesweeperMineField {
     const targetCell = this.cells.find((cell) => cell.htmlElement === cellToOpen);
     if (!targetCell.isOpened) {
       new Audio(breezeSound).play();
+      this.disable();
       switch (targetCell.type) {
         case cellTypes.empty:
           openEmptyCell(targetCell);
+          this.enable();
+          break;
+        case cellTypes.mine:
+          targetCell.open(() => this.mineCellClicked(targetCell));
           break;
         default:
-          targetCell.open();
+          targetCell.open(() => this.enable());
           break;
       }
 

@@ -5,6 +5,8 @@ import MinesweeperMenu from './components/game-content/menu/menu';
 import MinesweeperMineField from './components/game-content/mine-field/mine-field';
 import gameStartMusic from './assets/sounds/duck-hunt-intro.mp3';
 import Dog from './components/dog/dog';
+import MessageBox from './components/message-box/message-box';
+import dogLaugh from './assets/sounds/laugh.mp3';
 
 const gameContainer = createGameContainer();
 document.body.append(gameContainer);
@@ -35,15 +37,6 @@ mineField.adjustFontSize();
 
 window.addEventListener('resize', fitMineFieldToScreen);
 
-const fillMineField = (event) => {
-  const targetCell = event.target.closest('.minesweeper__mine-cell');
-  if (targetCell && event.button === 0) {
-    mineField.placeMines(10, targetCell);
-    mineField.htmlElement.removeEventListener('mousedown', fillMineField);
-    menu.secondsCounter.start();
-  }
-};
-
 const clickCell = (event) => {
   const targetCell = event.target.closest('.minesweeper__mine-cell');
   if (targetCell && event.button === 0) {
@@ -53,10 +46,22 @@ const clickCell = (event) => {
   }
 };
 
+const fillMineField = (event) => {
+  const targetCell = event.target.closest('.minesweeper__mine-cell');
+  if (targetCell && event.button === 0) {
+    mineField.placeMines(10, targetCell);
+    mineField.htmlElement.removeEventListener('mousedown', fillMineField);
+    menu.secondsCounter.start();
+    clickCell(event);
+    mineField.htmlElement.addEventListener('mousedown', clickCell);
+  }
+};
+
 const startNewGame = () => {
   menu.resetCounters();
   mineField.disable();
   mineField.reset();
+  mineField.htmlElement.removeEventListener('mousedown', clickCell);
   new Audio(gameStartMusic).play();
   const dog = new Dog(menu.bush.getBoundingClientRect(), mineField);
   minesweeper.append(dog.htmlElement);
@@ -67,9 +72,29 @@ const startNewGame = () => {
       dog.htmlElement.remove();
       mineField.enable();
       mineField.htmlElement.addEventListener('mousedown', fillMineField);
-      mineField.htmlElement.addEventListener('mousedown', clickCell);
     }, bushDimensions.left, bushDimensions.top);
   });
 };
 
 menu.bushClicked = startNewGame;
+
+const handleGameLose = (mineCell) => {
+  mineField.disable();
+  menu.bushClicked = null;
+  menu.secondsCounter.stop();
+  mineCell.revealMine(() => {
+    menu.bush.addEventListener('animationend', (event) => {
+      if (event.animationName === 'bush-dog') {
+        menu.bush.classList.remove('bush_animation_lose');
+        menu.bush.classList.add('bush_animation_idle');
+        MessageBox.showMessage('Game over. Try again');
+        menu.bushClicked = startNewGame;
+      }
+    }, { once: true });
+
+    new Audio(dogLaugh).play();
+    menu.bush.classList.add('bush_animation_lose');
+  });
+};
+
+mineField.mineCellClicked = handleGameLose;

@@ -17,9 +17,11 @@ export default class MinesweeperMenu {
   }
 
   onBushClick() {
-    this.bush.classList.remove('bush_animation_idle');
-    this.bushClicked();
-    this.bush.removeEventListener('click', this.onBushClick);
+    if (this.bushClicked) {
+      this.bush.classList.remove('bush_animation_idle');
+      this.bushClicked();
+      this.bush.removeEventListener('click', this.onBushClick);
+    }
   }
 
   resetCounters() {

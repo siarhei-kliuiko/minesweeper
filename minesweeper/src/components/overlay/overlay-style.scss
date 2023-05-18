@@ -1,0 +1,15 @@
+.overlay {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  background: #00000099;
+  z-index: 5;
+}
+
+.scroll-disable {
+  overflow: hidden;
+}

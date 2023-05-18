@@ -1,10 +1,12 @@
 @import "../common/mixins";
 
 .bush {
+  position: relative;
   height: 92px;
   width: 120px;
   background-image: url(../../assets/images/bush.png);
   background-size: 100% 100%;
+  transform-style: preserve-3d;
   @include add-wiggle-animation-on-hover;
   cursor: pointer;
 }
@@ -15,4 +17,42 @@
 
 .bush_animation_idle {
   @include add-wiggle-animation;
+}
+
+.bush_animation_lose::after {
+  position: absolute;
+  content: "";
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  bottom: 10%;
+  background-size: 100% 100%;
+  animation: bush-dog 3s forwards, bush-dog-laugh .2s infinite;
+}
+
+@keyframes bush-dog {
+
+  0%,
+  100% {
+    transform: translateZ(-1px);
+  }
+
+  40%,
+  60% {
+    transform: translateZ(-1px) translateY(-100%);
+  }
+
+}
+
+@keyframes bush-dog-laugh {
+
+  0%,
+  100% {
+    background-image: url(../../assets/images/dog-laugh0.png);
+  }
+
+  50% {
+    background-image: url(../../assets/images/dog-laugh1.png);
+  }
+
 }
