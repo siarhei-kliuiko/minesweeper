@@ -21,4 +21,10 @@ export default class MinesweeperMenu {
     this.bushClicked();
     this.bush.removeEventListener('click', this.onBushClick);
   }
+
+  resetCounters() {
+    this.secondsCounter.stop();
+    this.secondsCounter.reset();
+    this.clicksCounter.reset();
+  }
 }

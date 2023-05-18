@@ -54,7 +54,9 @@ const clickCell = (event) => {
 };
 
 const startNewGame = () => {
+  menu.resetCounters();
   mineField.disable();
+  mineField.reset();
   new Audio(gameStartMusic).play();
   const dog = new Dog(menu.bush.getBoundingClientRect(), mineField);
   minesweeper.append(dog.htmlElement);

@@ -17,13 +17,12 @@ export const cellTypes = {
 
 export class MineCell {
   constructor(htmlElement) {
-    const className = `minesweeper__mine-cell ${cellTypes.closed}`;
     this.type = 0;
     if (htmlElement) {
       this.htmlElement = htmlElement;
     } else {
       this.htmlElement = document.createElement('div');
-      this.htmlElement.className = className;
+      this.htmlElement.className = `minesweeper__mine-cell ${cellTypes.closed}`;
     }
 
     this.isOpened = false;
@@ -42,5 +41,11 @@ export class MineCell {
     this.isOpened = true;
     this.htmlElement.classList.remove(cellTypes.closed);
     this.htmlElement.classList.add('minesweeper__mine-cell_animation_open');
+  }
+
+  reset() {
+    this.type = 0;
+    this.isOpened = false;
+    this.htmlElement.className = `minesweeper__mine-cell ${cellTypes.closed}`;
   }
 }

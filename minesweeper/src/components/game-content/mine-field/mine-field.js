@@ -82,6 +82,10 @@ export default class MinesweeperMineField {
     this.htmlElement.classList.add('minesweeper__mine-field_disabled');
   }
 
+  reset() {
+    this.cells.forEach((cell) => cell.reset());
+  }
+
   getCellByCoordinates(row, column) {
     if (row >= 0 && row < this.cellsPerRow && column >= 0 && column < this.cellsPerRow) {
       return this.cells[row * this.cellsPerRow + column];
