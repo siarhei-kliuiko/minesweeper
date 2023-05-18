@@ -150,6 +150,14 @@ export default class MinesweeperMineField {
     }
   }
 
+  isAllMineCellsFound() {
+    return !this.cells.some((cell) => !cell.isOpened && cell.type !== cellTypes.mine);
+  }
+
+  openAllCells() {
+    this.cells.filter((cell) => !cell.isOpened).forEach((cell) => cell.open());
+  }
+
   openCell(cellToOpen) {
     const openEmptyCell = (targetCell) => {
       if (targetCell.isOpened) {
