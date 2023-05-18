@@ -40,6 +40,16 @@ const fillMineField = (event) => {
   if (targetCell && event.button === 0) {
     mineField.placeMines(10, targetCell);
     mineField.htmlElement.removeEventListener('mousedown', fillMineField);
+    menu.secondsCounter.start();
+  }
+};
+
+const clickCell = (event) => {
+  const targetCell = event.target.closest('.minesweeper__mine-cell');
+  if (targetCell && event.button === 0) {
+    if (mineField.openCell(targetCell)) {
+      menu.clicksCounter.addClick();
+    }
   }
 };
 
@@ -55,6 +65,7 @@ const startNewGame = () => {
       dog.htmlElement.remove();
       mineField.enable();
       mineField.htmlElement.addEventListener('mousedown', fillMineField);
+      mineField.htmlElement.addEventListener('mousedown', clickCell);
     }, bushDimensions.left, bushDimensions.top);
   });
 };

@@ -11,6 +11,33 @@
   @include add-wiggle-animation-on-hover;
 }
 
+.minesweeper__mine-cell_animation_open {
+  background-image: url(../../../assets/images/leaf.png);
+  animation: cell-opening 1s;
+}
+
+@keyframes cell-opening {
+
+  50% {
+    opacity: 1;
+  }
+
+  60% {
+    transform-origin: top;
+    transform: rotate(-360deg);
+  }
+
+  75% {
+    transform: rotate(-360deg) translate(70%);
+  }
+
+  100% {
+    transform: rotate(-360deg) translate(70%);
+    opacity: 0;
+  }
+
+}
+
 .minesweeper__mine-cell_type_mine {
   background-image: url(../../../assets/images/poo.png);
 }

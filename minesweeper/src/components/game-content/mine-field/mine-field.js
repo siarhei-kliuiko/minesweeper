@@ -1,5 +1,6 @@
 import './mine-field-style.scss';
 import { MineCell, cellTypes } from '../mine-cell/mine-cell';
+import breezeSound from '../../../assets/sounds/breeze.mp3';
 
 const MIN_WINDOW_WIDTH = 500;
 const MINE_AREA_SIZE = 3;
@@ -81,33 +82,41 @@ export default class MinesweeperMineField {
     this.htmlElement.classList.add('minesweeper__mine-field_disabled');
   }
 
-  getCellByIndexes(row, column) {
-    return this.cells[row * this.cellsPerRow + column];
+  getCellByCoordinates(row, column) {
+    if (row >= 0 && row < this.cellsPerRow && column >= 0 && column < this.cellsPerRow) {
+      return this.cells[row * this.cellsPerRow + column];
+    }
+
+    return false;
   }
 
-  getIndexesOfCell(index) {
+  getCellCoordinates(cell) {
+    const index = this.cells.indexOf(cell);
     const row = Math.floor(index / this.cellsPerRow);
     const col = index - this.cellsPerRow * row;
     return { row, col };
   }
 
-  placeMines(minesCount, mustBeNotMineCell) {
-    let minesPlaced = 0;
-    const increaseCellNumber = (row, col) => {
-      if (row >= 0 && row < this.cellsPerRow && col >= 0 && col < this.cellsPerRow) {
-        const targetCell = this.getCellByIndexes(row, col);
-        if (targetCell.type !== cellTypes.mine) {
-          targetCell.type += 1;
+  modifySurroundingCells(cell, modifyFunc) {
+    const { row: baseCellRow, col: baseCellColumn } = this.getCellCoordinates(cell);
+    for (let i = 0; i < MINE_AREA_SIZE; i += 1) {
+      for (let j = 0; j < MINE_AREA_SIZE; j += 1) {
+        const modifyCellRow = baseCellRow - 1 + i;
+        const modifyCellColumn = baseCellColumn - 1 + j;
+        const cellToModify = this.getCellByCoordinates(modifyCellRow, modifyCellColumn);
+        if (cellToModify && cellToModify !== cell) {
+          modifyFunc(cellToModify);
         }
       }
-    };
+    }
+  }
 
-    const placeNumbersAroundMine = (index) => {
-      const { row: mineRow, col: mineColumn } = this.getIndexesOfCell(index);
-      for (let row = 0; row < MINE_AREA_SIZE; row += 1) {
-        for (let col = 0; col < MINE_AREA_SIZE; col += 1) {
-          increaseCellNumber(mineRow - 1 + row, mineColumn - 1 + col);
-        }
+  placeMines(minesCount, mustBeNotMineCell) {
+    let minesPlaced = 0;
+    const increaseCellNumber = (targetCell) => {
+      const cellToModify = targetCell;
+      if (cellToModify.type !== cellTypes.mine) {
+        cellToModify.type += 1;
       }
     };
 
@@ -115,7 +124,8 @@ export default class MinesweeperMineField {
       if (this.cells[i].htmlElement !== mustBeNotMineCell
         && (minesCount - minesPlaced) / (this.cells.length - i) >= Math.random()) {
         this.cells[i].type = cellTypes.mine;
-        placeNumbersAroundMine(i);
+        this.modifySurroundingCells(this.cells[i], increaseCellNumber);
+
         minesPlaced += 1;
       }
     }
@@ -125,7 +135,7 @@ export default class MinesweeperMineField {
         .filter((cell) => cell.type !== cellTypes.mine && cell.htmlElement !== mustBeNotMineCell);
       const indexToPlaceMine = Math.floor(Math.random() * nonMinedCells.length);
       this.cells[indexToPlaceMine].type = cellTypes.mine;
-      placeNumbersAroundMine(indexToPlaceMine);
+      this.modifySurroundingCells(this.cells[indexToPlaceMine], increaseCellNumber);
     }
 
     const cellTypesValues = Object.values(cellTypes);
@@ -134,5 +144,35 @@ export default class MinesweeperMineField {
         this.cells[i].type = cellTypesValues[this.cells[i].type];
       }
     }
+  }
+
+  openCell(cellToOpen) {
+    const openEmptyCell = (targetCell) => {
+      if (targetCell.isOpened) {
+        return;
+      }
+
+      targetCell.open();
+      if (targetCell.type === cellTypes.empty) {
+        this.modifySurroundingCells(targetCell, openEmptyCell);
+      }
+    };
+
+    const targetCell = this.cells.find((cell) => cell.htmlElement === cellToOpen);
+    if (!targetCell.isOpened) {
+      new Audio(breezeSound).play();
+      switch (targetCell.type) {
+        case cellTypes.empty:
+          openEmptyCell(targetCell);
+          break;
+        default:
+          targetCell.open();
+          break;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 }

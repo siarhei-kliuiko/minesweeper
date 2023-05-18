@@ -30,8 +30,17 @@ export class MineCell {
   }
 
   open() {
+    const openAnimationEnded = (event) => {
+      if (event.animationName === 'cell-opening') {
+        this.htmlElement.classList.remove('minesweeper__mine-cell_animation_open');
+        this.htmlElement.removeEventListener('animationend', openAnimationEnded);
+        this.htmlElement.classList.add(this.type);
+      }
+    };
+
+    this.htmlElement.addEventListener('animationend', openAnimationEnded);
     this.isOpened = true;
     this.htmlElement.classList.remove(cellTypes.closed);
-    this.htmlElement.classList.add(this.type);
+    this.htmlElement.classList.add('minesweeper__mine-cell_animation_open');
   }
 }
