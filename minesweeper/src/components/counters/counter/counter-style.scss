@@ -1,0 +1,13 @@
+@import '../counters.scss';
+
+.clicks-counter::before {
+  content: "moves";
+}
+
+.mines-counter::before {
+  content: "mines left";
+}
+
+.flags-counter::before {
+  content: "flags placed";
+}

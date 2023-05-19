@@ -3,7 +3,8 @@ import './seconds-counter-style.scss';
 export default class SecondsCounter {
   constructor(className) {
     this.htmlElement = document.createElement('span');
-    this.htmlElement.className = `seconds-counter ${className}`;
+    this.htmlElement.className = `counter seconds-counter ${className}`;
+    this.intervalId = null;
     this.setSeconds(0);
   }
 
@@ -13,7 +14,9 @@ export default class SecondsCounter {
   }
 
   start() {
-    this.intervalId = setInterval(this.tick.bind(this), 1000);
+    if (this.intervalId === null) {
+      this.intervalId = setInterval(this.tick.bind(this), 1000);
+    }
   }
 
   tick() {
@@ -26,6 +29,9 @@ export default class SecondsCounter {
   }
 
   stop() {
-    clearInterval(this.intervalId);
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
   }
 }

@@ -1,6 +1,7 @@
 import './mine-cell.scss';
 import shockSound from '../../../assets/sounds/shock.mp3';
 import explosionSound from '../../../assets/sounds/boom.mp3';
+import flagSound from '../../../assets/sounds/flag.mp3';
 
 export const cellTypes = {
   empty: 'minesweeper__mine-cell_type_empty',
@@ -13,7 +14,6 @@ export const cellTypes = {
   seven: 'minesweeper__mine-cell_type_seven',
   eight: 'minesweeper__mine-cell_type_eight',
   closed: 'minesweeper__mine-cell_type_closed',
-  flag: 'minesweeper__mine-cell_type_flag',
   mine: 'minesweeper__mine-cell_type_mine',
 };
 
@@ -28,6 +28,7 @@ export class MineCell {
     }
 
     this.isOpened = false;
+    this.isFlagged = false;
   }
 
   open(handleCellOpening = null) {
@@ -44,6 +45,8 @@ export class MineCell {
 
     this.htmlElement.addEventListener('animationend', openAnimationEnded);
     this.isOpened = true;
+    this.isFlagged = false;
+    this.htmlElement.classList.remove('minesweeper__mine-cell_state_flagged');
     this.htmlElement.classList.remove(cellTypes.closed);
     this.htmlElement.classList.add('minesweeper__mine-cell_animation_open');
   }
@@ -76,6 +79,13 @@ export class MineCell {
   reset() {
     this.type = 0;
     this.isOpened = false;
+    this.isFlagged = false;
     this.htmlElement.className = `minesweeper__mine-cell ${cellTypes.closed}`;
+  }
+
+  toggleFlagged() {
+    this.isFlagged = !this.isFlagged;
+    this.htmlElement.classList.toggle('minesweeper__mine-cell_state_flagged');
+    new Audio(flagSound).play();
   }
 }

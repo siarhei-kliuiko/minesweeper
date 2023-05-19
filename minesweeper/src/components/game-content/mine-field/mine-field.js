@@ -10,6 +10,7 @@ export default class MinesweeperMineField {
     this.cellsPerRow = numberOfCells;
     this.htmlElement = document.createElement('div');
     this.htmlElement.className = 'minesweeper__mine-field minesweeper__mine-field_disabled';
+    this.htmlElement.addEventListener('contextmenu', (event) => { event.preventDefault(); });
     this.cells = [];
     const firstRow = this.createMineFieldFirstRow(this.cellsPerRow);
     this.htmlElement.append(firstRow);
@@ -158,20 +159,20 @@ export default class MinesweeperMineField {
     this.cells.filter((cell) => !cell.isOpened).forEach((cell) => cell.open());
   }
 
-  openCell(cellToOpen) {
-    const openEmptyCell = (targetCell) => {
-      if (targetCell.isOpened) {
-        return;
-      }
+  openCell(targetCellElement) {
+    const targetCell = this.cells.find((cell) => cell.htmlElement === targetCellElement);
+    if (!targetCell.isOpened && !targetCell.isFlagged) {
+      const openEmptyCell = (cellToOpen) => {
+        if (cellToOpen.isOpened) {
+          return;
+        }
 
-      targetCell.open();
-      if (targetCell.type === cellTypes.empty) {
-        this.modifySurroundingCells(targetCell, openEmptyCell);
-      }
-    };
+        cellToOpen.open();
+        if (cellToOpen.type === cellTypes.empty) {
+          this.modifySurroundingCells(cellToOpen, openEmptyCell);
+        }
+      };
 
-    const targetCell = this.cells.find((cell) => cell.htmlElement === cellToOpen);
-    if (!targetCell.isOpened) {
       new Audio(breezeSound).play();
       this.disable();
       switch (targetCell.type) {
@@ -191,5 +192,15 @@ export default class MinesweeperMineField {
     }
 
     return false;
+  }
+
+  placeFlag(targetCellElement) {
+    const targetCell = this.cells.find((cell) => cell.htmlElement === targetCellElement);
+    if (!targetCell.isOpened) {
+      targetCell.toggleFlagged();
+      return { isFlagPlaced: true, isAway: !targetCell.isFlagged };
+    }
+
+    return { isFlagPlaced: false, isAway: !targetCell.isFlagged };
   }
 }

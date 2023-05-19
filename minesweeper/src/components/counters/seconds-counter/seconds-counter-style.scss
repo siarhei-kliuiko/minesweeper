@@ -1,0 +1,5 @@
+@import '../counters.scss';
+
+.seconds-counter::before {
+  content: "seconds";
+}

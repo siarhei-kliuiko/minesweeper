@@ -1,0 +1,38 @@
+.minesweeper__counters {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  white-space: nowrap;
+}
+
+.minesweeper__counters_left {
+  text-align: left;
+
+  & .counter::before {
+    left: 0;
+  }
+
+}
+
+.minesweeper__counters_right {
+  text-align: right;
+
+  & .counter::before {
+    right: 0;
+  }
+
+}
+
+.counter {
+  position: relative;
+  width: 2em;
+}
+
+.counter::before {
+  position: absolute;
+  top: -15px;
+  font-size: 25px;
+  font-weight: normal;
+}
+
+

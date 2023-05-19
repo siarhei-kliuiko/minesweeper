@@ -43,16 +43,41 @@ const handleGameWin = () => {
   mineField.openAllCells();
   menu.secondsCounter.stop();
   new Audio(cheerSound).play();
-  MessageBox.showMessage(`Hooray! You found all mines in ${menu.secondsCounter.seconds} seconds and ${menu.clicksCounter.numberOfClicks} ${menu.clicksCounter.numberOfClicks % 10 === 1 ? 'move' : 'moves'}!`);
+  MessageBox.showMessage(`Hooray! You found all mines in ${menu.secondsCounter.seconds} seconds and ${menu.clicksCounter.count} ${menu.clicksCounter.count % 10 === 1 ? 'move' : 'moves'}!`);
+};
+
+const handleFlagPlacement = (count, remove) => {
+  if (remove) {
+    menu.flagsCounter.decrease(count);
+    if (menu.flagsCounter.count < menu.minesCounter.initialValue) {
+      menu.minesCounter.set(menu.minesCounter.initialValue - menu.flagsCounter.count);
+    }
+  } else {
+    menu.flagsCounter.increase(count);
+    menu.minesCounter.decrease(count);
+  }
 };
 
 const clickCell = (event) => {
   const targetCell = event.target.closest('.minesweeper__mine-cell');
-  if (targetCell && event.button === 0) {
-    if (mineField.openCell(targetCell)) {
-      menu.clicksCounter.addClick();
-      if (mineField.isAllMineCellsFound()) {
-        handleGameWin();
+  if (targetCell) {
+    if (event.button === 0) {
+      if (mineField.openCell(targetCell)) {
+        menu.clicksCounter.increase();
+        const flagsLeft = mineField.cells.filter((cell) => cell.isFlagged).length;
+        if (flagsLeft !== menu.flagsCounter.count) {
+          handleFlagPlacement(menu.flagsCounter.count - flagsLeft, true);
+        }
+
+        if (mineField.isAllMineCellsFound()) {
+          handleGameWin();
+        }
+      }
+    } else if (event.button === 2) {
+      const flagPlacement = mineField.placeFlag(targetCell);
+      if (flagPlacement.isFlagPlaced) {
+        menu.clicksCounter.increase();
+        handleFlagPlacement(1, flagPlacement.isAway);
       }
     }
   }
@@ -60,16 +85,25 @@ const clickCell = (event) => {
 
 const fillMineField = (event) => {
   const targetCell = event.target.closest('.minesweeper__mine-cell');
-  if (targetCell && event.button === 0) {
-    mineField.placeMines(10, targetCell);
-    mineField.htmlElement.removeEventListener('mousedown', fillMineField);
+  if (targetCell) {
     menu.secondsCounter.start();
-    clickCell(event);
-    mineField.htmlElement.addEventListener('mousedown', clickCell);
+    if (event.button === 0) {
+      mineField.placeMines(10, targetCell);
+      mineField.htmlElement.removeEventListener('mousedown', fillMineField);
+      clickCell(event);
+      mineField.htmlElement.addEventListener('mousedown', clickCell);
+    } else if (event.button === 2) {
+      const flagPlacement = mineField.placeFlag(targetCell);
+      if (flagPlacement.isFlagPlaced) {
+        menu.clicksCounter.increase();
+        handleFlagPlacement(1, flagPlacement.isAway);
+      }
+    }
   }
 };
 
 const startNewGame = () => {
+  menu.bushClicked = null;
   menu.resetCounters();
   mineField.disable();
   mineField.reset();
@@ -83,6 +117,7 @@ const startNewGame = () => {
     dog.goForAWalk(1, () => {
       dog.htmlElement.remove();
       mineField.enable();
+      menu.bushClicked = startNewGame;
       mineField.htmlElement.addEventListener('mousedown', fillMineField);
     }, bushDimensions.left, bushDimensions.top);
   });
