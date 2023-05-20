@@ -3,11 +3,9 @@ import createGameContainer from './components/game-container/game-container';
 import createMinesweeper from './components/game-content/minesweeper';
 import MinesweeperMenu from './components/game-content/menu/menu';
 import MinesweeperMineField from './components/game-content/mine-field/mine-field';
-import gameStartMusic from './assets/sounds/duck-hunt-intro.mp3';
+import { SoundsRepository, sounds } from './components/sounds-repository/sounds-repository';
 import Dog from './components/dog/dog';
 import MessageBox from './components/message-box/message-box';
-import dogLaugh from './assets/sounds/laugh.mp3';
-import cheerSound from './assets/sounds/cheer.mp3';
 
 const gameContainer = createGameContainer();
 document.body.append(gameContainer);
@@ -41,8 +39,7 @@ window.addEventListener('resize', fitMineFieldToScreen);
 const handleGameWin = () => {
   mineField.disable();
   mineField.openAllCells();
-  menu.secondsCounter.stop();
-  new Audio(cheerSound).play();
+  SoundsRepository.createSound(sounds.cheer).play();
   MessageBox.showMessage(`Hooray! You found all mines in ${menu.secondsCounter.seconds} seconds and ${menu.clicksCounter.count} ${menu.clicksCounter.count % 10 === 1 ? 'move' : 'moves'}!`);
 };
 
@@ -108,7 +105,7 @@ const startNewGame = () => {
   mineField.disable();
   mineField.reset();
   mineField.htmlElement.removeEventListener('mousedown', clickCell);
-  new Audio(gameStartMusic).play();
+  SoundsRepository.createSound(sounds.gameStart).play();
   const dog = new Dog(menu.bush.getBoundingClientRect(), mineField);
   minesweeper.append(dog.htmlElement);
   dog.goForAWalk(3, () => {
@@ -139,7 +136,7 @@ const handleGameLose = (mineCell) => {
       }
     }, { once: true });
 
-    new Audio(dogLaugh).play();
+    SoundsRepository.createSound(sounds.laugh).play();
     menu.bush.classList.add('bush_animation_lose');
   });
 };

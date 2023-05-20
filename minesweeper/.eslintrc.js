@@ -13,4 +13,8 @@ module.exports = {
       { devDependencies: true },
     ],
   },
+
+  parserOptions: {
+    ecmaVersion: 2022,
+  },
 };

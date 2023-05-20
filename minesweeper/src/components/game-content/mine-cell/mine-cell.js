@@ -1,7 +1,5 @@
+import { SoundsRepository, sounds } from '../../sounds-repository/sounds-repository';
 import './mine-cell.scss';
-import shockSound from '../../../assets/sounds/shock.mp3';
-import explosionSound from '../../../assets/sounds/boom.mp3';
-import flagSound from '../../../assets/sounds/flag.mp3';
 
 export const cellTypes = {
   empty: 'minesweeper__mine-cell_type_empty',
@@ -52,8 +50,7 @@ export class MineCell {
   }
 
   revealMine(callback) {
-    const mineSound = new Audio(shockSound);
-    const explosion = new Audio(explosionSound);
+    const mineSound = SoundsRepository.createSound(sounds.mine);
 
     const animationStartHandler = (event) => {
       if (event.animationName === 'reveal-mine') {
@@ -61,7 +58,7 @@ export class MineCell {
           this.htmlElement.addEventListener('animationstart', animationStartHandler, { once: true });
           this.htmlElement.classList.remove('minesweeper__mine-cell_animation_mine');
           this.htmlElement.classList.add('minesweeper__mine-cell_animation_explode');
-          explosion.play();
+          SoundsRepository.createSound(sounds.explosion).play();
         }, { once: true });
 
         mineSound.play();
@@ -86,6 +83,6 @@ export class MineCell {
   toggleFlagged() {
     this.isFlagged = !this.isFlagged;
     this.htmlElement.classList.toggle('minesweeper__mine-cell_state_flagged');
-    new Audio(flagSound).play();
+    SoundsRepository.createSound(sounds.flag).play();
   }
 }

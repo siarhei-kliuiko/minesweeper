@@ -1,6 +1,6 @@
 import './mine-field-style.scss';
 import { MineCell, cellTypes } from '../mine-cell/mine-cell';
-import breezeSound from '../../../assets/sounds/breeze.mp3';
+import { SoundsRepository, sounds } from '../../sounds-repository/sounds-repository';
 
 const MIN_WINDOW_WIDTH = 500;
 const MINE_AREA_SIZE = 3;
@@ -173,7 +173,7 @@ export default class MinesweeperMineField {
         }
       };
 
-      new Audio(breezeSound).play();
+      SoundsRepository.createSound(sounds.breeze).play();
       this.disable();
       switch (targetCell.type) {
         case cellTypes.empty:

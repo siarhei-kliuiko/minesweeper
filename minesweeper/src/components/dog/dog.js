@@ -1,5 +1,5 @@
+import { SoundsRepository, sounds } from '../sounds-repository/sounds-repository';
 import './dog.scss';
-import dogBarkSound from '../../assets/sounds/bark.mp3';
 
 const DOG_DIRECTION_RIGHT = true;
 const DOG_DIRECTION_LEFT = false;
@@ -14,7 +14,7 @@ export default class Dog {
   }
 
   static bark() {
-    new Audio(dogBarkSound).play();
+    SoundsRepository.createSound(sounds.bark).play();
   }
 
   walkTo(x, y, goForAWalk = null, walksLeft = 0, walkEnd = null) {
