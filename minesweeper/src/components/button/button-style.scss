@@ -1,0 +1,21 @@
+@import "../common/variables.scss";
+
+.button {
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  background: $main-color;
+  transition: filter .3s;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+
+  .button:hover {
+    filter: brightness(80%);
+  }
+
+}

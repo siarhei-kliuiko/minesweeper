@@ -11,10 +11,6 @@
   cursor: pointer;
 }
 
-.minesweeper__bush {
-  align-self: flex-end;
-}
-
 .bush_animation_idle {
   @include add-wiggle-animation;
 }

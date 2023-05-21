@@ -1,0 +1,15 @@
+.game-results-board {
+  font-size: 20px;
+}
+
+.game-results-board__title {
+  text-align: center;
+}
+
+.game-results-board__record_win::marker {
+  content: "\01f3c6";
+}
+
+.game-results-board__record_lose::marker {
+  content: "\01f4a9";
+}

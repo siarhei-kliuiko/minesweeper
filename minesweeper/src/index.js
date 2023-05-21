@@ -6,6 +6,7 @@ import MinesweeperMineField from './components/game-content/mine-field/mine-fiel
 import { SoundsRepository, sounds } from './components/sounds-repository/sounds-repository';
 import Dog from './components/dog/dog';
 import MessageBox from './components/message-box/message-box';
+import GameResultsStorage from './components/game-result-storage/game-results-storage';
 
 const gameContainer = createGameContainer();
 document.body.append(gameContainer);
@@ -40,7 +41,7 @@ const handleGameWin = () => {
   mineField.disable();
   mineField.openAllCells();
   SoundsRepository.createSound(sounds.cheer).play();
-  MessageBox.showMessage(`Hooray! You found all mines in ${menu.secondsCounter.seconds} seconds and ${menu.clicksCounter.count} ${menu.clicksCounter.count % 10 === 1 ? 'move' : 'moves'}!`);
+  MessageBox.showMessage(`Hooray! You found all mines in ${menu.secondsCounter.seconds} seconds and ${menu.clicksCounter.count} moves!`);
 };
 
 const handleFlagPlacement = (count, remove) => {
