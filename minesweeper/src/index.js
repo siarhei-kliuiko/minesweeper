@@ -8,6 +8,9 @@ import Dog from './components/dog/dog';
 import MessageBox from './components/message-box/message-box';
 import { GameSettings } from './components/game-settings/game-settings';
 import GameResultsStorage from './components/game-result-storage/game-results-storage';
+import GameState from './components/game-state/game-state';
+
+GameState.load();
 
 const gameContainer = createGameContainer();
 document.body.append(gameContainer);
@@ -90,6 +93,28 @@ const clickCell = (event) => {
   }
 };
 
+if (GameState.current && GameState.current.secondCounterState.isEnabled) {
+  menu.secondsCounter.setSeconds(GameState.current.secondCounterState.seconds);
+  menu.clicksCounter.set(GameState.current.clicksCount);
+  menu.minesCounter.set(GameState.current.minesCount);
+  menu.flagsCounter.set(GameState.current.flagsCount);
+  for (let i = 0; i < mineField.cells.length; i += 1) {
+    mineField.cells[i].type = GameState.current.cellsInfo[i].type;
+    if (GameState.current.cellsInfo[i].isOpened) {
+      mineField.cells[i].htmlElement.classList.add(mineField.cells[i].type);
+      mineField.cells[i].setOpenedState();
+    } else if (GameState.current.cellsInfo[i].isFlagged) {
+      mineField.cells[i].toggleFlagged(true);
+    }
+  }
+
+  GameState.current = null;
+  menu.bush.classList.remove('bush_animation_idle');
+  mineField.enable();
+  mineField.htmlElement.addEventListener('mousedown', clickCell);
+  menu.secondsCounter.start();
+}
+
 const fillMineField = (event) => {
   const targetCell = event.target.closest('.minesweeper__mine-cell');
   if (targetCell) {
@@ -171,3 +196,11 @@ const resetGame = () => {
 };
 
 GameSettings.mineFieldChanged = resetGame;
+
+window.addEventListener('beforeunload', () => GameState.save(
+  mineField,
+  menu.secondsCounter,
+  menu.clicksCounter,
+  menu.minesCounter,
+  menu.flagsCounter,
+));

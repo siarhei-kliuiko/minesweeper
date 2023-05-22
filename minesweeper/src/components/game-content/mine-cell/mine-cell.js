@@ -42,11 +42,15 @@ export class MineCell {
     };
 
     this.htmlElement.addEventListener('animationend', openAnimationEnded);
+    this.setOpenedState();
+    this.htmlElement.classList.add('minesweeper__mine-cell_animation_open');
+  }
+
+  setOpenedState() {
     this.isOpened = true;
     this.isFlagged = false;
     this.htmlElement.classList.remove('minesweeper__mine-cell_state_flagged');
     this.htmlElement.classList.remove(cellTypes.closed);
-    this.htmlElement.classList.add('minesweeper__mine-cell_animation_open');
   }
 
   revealMine(callback) {
@@ -80,9 +84,11 @@ export class MineCell {
     this.htmlElement.className = `minesweeper__mine-cell ${cellTypes.closed}`;
   }
 
-  toggleFlagged() {
+  toggleFlagged(silent = false) {
     this.isFlagged = !this.isFlagged;
     this.htmlElement.classList.toggle('minesweeper__mine-cell_state_flagged');
-    SoundsRepository.createSound(sounds.flag).play();
+    if (!silent) {
+      SoundsRepository.createSound(sounds.flag).play();
+    }
   }
 }
