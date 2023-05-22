@@ -6,3 +6,19 @@ body {
   margin: 0;
   padding: 0;
 }
+
+:root .dark{
+  --main-color: #ffff00;
+  --secondary-color: #000;
+  --background-image: url(../../assets/images/game-background.jpg);
+  --bush-image: url(../../assets/images/bush.png);
+  --leaf-image: url(../../assets/images/leaf.png);
+}
+
+:root .light{
+  --main-color: #4a4a53;
+  --secondary-color: #bae4dd;
+  --background-image: url(../../assets/images/game-background-light.jpg);
+  --bush-image: url(../../assets/images/bush-light.png);
+  --leaf-image: url(../../assets/images/leaf-light.png);
+}

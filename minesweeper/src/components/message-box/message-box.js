@@ -2,7 +2,7 @@ import Overlay from '../overlay/overlay';
 import './message-box.scss';
 import createButton from '../button/button';
 import GameResultsStorage from '../game-result-storage/game-results-storage';
-import { GameSettings, gameDifficulties } from '../game-settings/game-settings';
+import { GameSettings, gameDifficulties, themes } from '../game-settings/game-settings';
 import './settings-dialog.scss';
 
 export default class MessageBox {
@@ -102,8 +102,37 @@ export default class MessageBox {
     soundsLabel.htmlFor = soundsSwitcher.id;
     dialog.append(soundsTitle, soundsSwitcher, soundsLabel);
 
+    const themeTitle = document.createElement('h3');
+    themeTitle.innerText = 'Theme:';
+    const themeSwitcher = document.createElement('input');
+    themeSwitcher.className = 'settings-dialog__theme-checkbox';
+    themeSwitcher.type = 'checkbox';
+    themeSwitcher.id = 'theme';
+    themeSwitcher.checked = (currentGameSettings.theme === themes.dark);
+    themeSwitcher.addEventListener('change', () => {
+      if (themeSwitcher.checked) {
+        currentGameSettings.theme = themes.dark;
+        document.body.classList.add(themes.dark);
+        document.body.classList.remove(themes.light);
+      } else {
+        currentGameSettings.theme = themes.light;
+        document.body.classList.add(themes.light);
+        document.body.classList.remove(themes.dark);
+      }
+    });
+
+    const themeLabel = document.createElement('label');
+    themeLabel.className = 'settings-dialog__theme-switch';
+    themeLabel.htmlFor = themeSwitcher.id;
+    dialog.append(themeTitle, themeSwitcher, themeLabel);
+
     this.show(dialog, 'Cancel', 'Apply', () => {
-      GameSettings.set(newDifficulty, Number(minesSlider.value), soundsSwitcher.checked);
+      GameSettings.set(
+        newDifficulty,
+        Number(minesSlider.value),
+        soundsSwitcher.checked,
+        currentGameSettings.theme,
+      );
     });
   }
 }

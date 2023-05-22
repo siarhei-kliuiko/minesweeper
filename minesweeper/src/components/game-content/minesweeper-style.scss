@@ -2,5 +2,5 @@
 
 .minesweeper {
   padding: $minesweeper-padding;
-  background: url(../../assets/images/game-background.jpg);
+  background: var(--background-image);
 }

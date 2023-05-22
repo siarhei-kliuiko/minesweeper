@@ -10,6 +10,8 @@ import { GameSettings } from './components/game-settings/game-settings';
 import GameResultsStorage from './components/game-result-storage/game-results-storage';
 import GameState from './components/game-state/game-state';
 
+document.body.classList.add(GameSettings.get().theme);
+
 GameState.load();
 
 const gameContainer = createGameContainer();

@@ -7,13 +7,13 @@
 
 .minesweeper__mine-cell_type_closed {
   cursor: pointer;
-  background-image: url(../../../assets/images/leaf.png);
+  background-image: var(--leaf-image);
   @include add-wiggle-animation-on-hover;
 }
 
 .minesweeper__mine-cell_animation_open {
   transform-origin: top;
-  background-image: url(../../../assets/images/leaf.png);
+  background-image: var(--leaf-image);
   animation: cell-opening 1s;
 }
 

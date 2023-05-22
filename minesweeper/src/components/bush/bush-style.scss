@@ -4,7 +4,7 @@
   position: relative;
   height: 92px;
   width: 120px;
-  background-image: url(../../assets/images/bush.png);
+  background-image: var(--bush-image);
   background-size: 100% 100%;
   transform-style: preserve-3d;
   @include add-wiggle-animation-on-hover;

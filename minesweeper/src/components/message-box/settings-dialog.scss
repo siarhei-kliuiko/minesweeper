@@ -1,5 +1,3 @@
-@import "../common/variables.scss";
-
 .settings-dialog {
   font-size: 25px;
 }
@@ -11,15 +9,15 @@
 .settings-dialog__label {
   margin: 0 10px;
   padding: 5px 8px;
-  border: $main-color 2px solid;
+  border: var(--main-color) 2px solid;
   border-radius: 10px;
   font-weight: bold;
   cursor: pointer;
 }
 
 .settings-dialog__radio:checked + .settings-dialog__label {
-  background: $main-color;
-  color: $secondary-color;
+  background: var(--main-color);
+  color: var(--secondary-color);
 }
 
 .settings-dialog__slider-wrapper {
@@ -31,7 +29,7 @@
 .settings-dialog__mines-slider {
   appearance: none;
   height: 15px;
-  border: $main-color 2px solid;
+  border: var(--main-color) 2px solid;
   background: none;
   flex: 1 0;
 }
@@ -41,7 +39,7 @@
   width: 10px;
   height: 25px;
   border-radius: 5px;
-  background: $main-color;
+  background: var(--main-color);
   cursor: pointer;
 }
 
@@ -49,22 +47,25 @@
   flex: 0 1 25px;
 }
 
-.settings-dialog__sounds-checkbox {
+.settings-dialog__sounds-checkbox,
+.settings-dialog__theme-checkbox {
   display: none;
 }
 
-.settings-dialog__sounds-switch {
+.settings-dialog__sounds-switch,
+.settings-dialog__theme-switch {
   display: inline-block;
   position: relative;
   width: 90px;
   height: 40px;
-  border: $main-color 2px solid;
+  border: var(--main-color) 2px solid;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
 }
 
-.settings-dialog__sounds-switch::before {
+.settings-dialog__sounds-switch::before,
+.settings-dialog__theme-switch::before {
   position: absolute;
   content: "off";
   left: 0;
@@ -73,12 +74,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: $main-color;
-  color: $secondary-color;
+  background: var(--main-color);
+  color: var(--secondary-color);
   transition: left .3s;
 }
 
-.settings-dialog__sounds-checkbox:checked + .settings-dialog__sounds-switch::before {
+.settings-dialog__sounds-checkbox:checked + .settings-dialog__sounds-switch::before,
+.settings-dialog__theme-checkbox:checked + .settings-dialog__theme-switch::before {
   content: "on";
   left: 50%;
+}
+
+.settings-dialog__theme-switch {
+  width: 180px;
+}
+
+.settings-dialog__theme-switch::before {
+  content: "light";
+}
+
+.settings-dialog__theme-checkbox:checked + .settings-dialog__theme-switch::before {
+  content: "dark";
 }

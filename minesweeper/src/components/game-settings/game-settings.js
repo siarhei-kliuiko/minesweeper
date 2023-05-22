@@ -4,6 +4,11 @@ export const gameDifficulties = {
   hard: { name: 'hard', value: 25 },
 };
 
+export const themes = {
+  light: 'light',
+  dark: 'dark',
+};
+
 export class GameSettings {
   static get() {
     let settings = JSON.parse(localStorage.getItem('settings'));
@@ -19,22 +24,33 @@ export class GameSettings {
           settingGetFailed = true;
         }
 
-        settings = { difficulty: settings.difficulty, minesCount, sounds: settings.sounds };
+        settings = {
+          difficulty: settings.difficulty,
+          minesCount,
+          sounds: settings.sounds,
+          theme: settings.theme,
+        };
       }
     } else {
       settingGetFailed = true;
     }
 
     if (settingGetFailed) {
-      settings = { difficulty: gameDifficulties.easy, minesCount: 10, sounds: true };
+      settings = {
+        difficulty: gameDifficulties.easy,
+        minesCount: 10,
+        sounds: true,
+        theme: themes.dark,
+      };
+
       localStorage.setItem('settings', JSON.stringify(settings));
     }
     return settings;
   }
 
-  static set(difficulty, minesCount, sounds) {
+  static set(difficulty, minesCount, sounds, theme) {
     const settings = GameSettings.get();
-    localStorage.setItem('settings', JSON.stringify({ difficulty, minesCount, sounds }));
+    localStorage.setItem('settings', JSON.stringify({ difficulty, minesCount, sounds, theme }));
     if (settings.difficulty.value !== difficulty.value || settings.minesCount !== minesCount) {
       GameSettings.mineFieldChanged();
     }
