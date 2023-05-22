@@ -6,6 +6,7 @@ import MinesweeperMineField from './components/game-content/mine-field/mine-fiel
 import { SoundsRepository, sounds } from './components/sounds-repository/sounds-repository';
 import Dog from './components/dog/dog';
 import MessageBox from './components/message-box/message-box';
+import { GameSettings } from './components/game-settings/game-settings';
 import GameResultsStorage from './components/game-result-storage/game-results-storage';
 
 const gameContainer = createGameContainer();
@@ -17,7 +18,7 @@ gameContainer.append(minesweeper);
 const menu = new MinesweeperMenu();
 minesweeper.append(menu.htmlElement);
 
-const mineField = new MinesweeperMineField(10);
+let mineField = new MinesweeperMineField(GameSettings.get().difficulty.value);
 minesweeper.append(mineField.htmlElement);
 let currentPixelRatio = window.devicePixelRatio;
 const fitMineFieldToScreen = () => {
@@ -38,6 +39,14 @@ mineField.adjustFontSize();
 window.addEventListener('resize', fitMineFieldToScreen);
 
 const handleGameWin = () => {
+  menu.secondsCounter.stop();
+  GameResultsStorage.addGameResult(
+    true,
+    menu.secondsCounter.seconds,
+    menu.clicksCounter.count,
+    GameSettings.get().minesCount,
+    GameSettings.get().difficulty.name,
+  );
   mineField.disable();
   mineField.openAllCells();
   SoundsRepository.createSound(sounds.cheer).play();
@@ -86,7 +95,7 @@ const fillMineField = (event) => {
   if (targetCell) {
     menu.secondsCounter.start();
     if (event.button === 0) {
-      mineField.placeMines(10, targetCell);
+      mineField.placeMines(GameSettings.get().minesCount, targetCell);
       mineField.htmlElement.removeEventListener('mousedown', fillMineField);
       clickCell(event);
       mineField.htmlElement.addEventListener('mousedown', clickCell);
@@ -124,9 +133,16 @@ const startNewGame = () => {
 menu.bushClicked = startNewGame;
 
 const handleGameLose = (mineCell) => {
+  menu.secondsCounter.stop();
+  GameResultsStorage.addGameResult(
+    false,
+    menu.secondsCounter.seconds,
+    menu.clicksCounter.count,
+    GameSettings.get().minesCount,
+    GameSettings.get().difficulty.name,
+  );
   mineField.disable();
   menu.bushClicked = null;
-  menu.secondsCounter.stop();
   mineCell.revealMine(() => {
     menu.bush.addEventListener('animationend', (event) => {
       if (event.animationName === 'bush-dog') {
@@ -143,3 +159,15 @@ const handleGameLose = (mineCell) => {
 };
 
 mineField.mineCellClicked = handleGameLose;
+
+const resetGame = () => {
+  menu.resetCounters();
+  mineField.htmlElement.remove();
+  mineField = new MinesweeperMineField(GameSettings.get().difficulty.value);
+  mineField.mineCellClicked = handleGameLose;
+  minesweeper.append(mineField.htmlElement);
+  fitMineFieldToScreen();
+  mineField.adjustFontSize();
+};
+
+GameSettings.mineFieldChanged = resetGame;

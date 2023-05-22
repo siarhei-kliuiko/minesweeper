@@ -139,8 +139,8 @@ export default class MinesweeperMineField {
       const nonMinedCells = this.cells
         .filter((cell) => cell.type !== cellTypes.mine && cell.htmlElement !== mustBeNotMineCell);
       const indexToPlaceMine = Math.floor(Math.random() * nonMinedCells.length);
-      this.cells[indexToPlaceMine].type = cellTypes.mine;
-      this.modifySurroundingCells(this.cells[indexToPlaceMine], increaseCellNumber);
+      nonMinedCells[indexToPlaceMine].type = cellTypes.mine;
+      this.modifySurroundingCells(nonMinedCells[indexToPlaceMine], increaseCellNumber);
     }
 
     const cellTypesValues = Object.values(cellTypes);

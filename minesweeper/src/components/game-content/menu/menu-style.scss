@@ -24,3 +24,8 @@
   border-radius: 50px;
   font-size: 30px;
 }
+
+.minesweeper__buttons-container {
+  display: flex;
+  column-gap: 20px;
+}

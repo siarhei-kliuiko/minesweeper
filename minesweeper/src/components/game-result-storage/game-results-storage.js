@@ -14,7 +14,7 @@ export default class GameResultsStorage {
       resultsRecords.forEach((record) => {
         const gameResult = document.createElement('li');
         gameResult.className = `game-results-board__record game-results-board__record_${record.isWin ? 'win' : 'lose'}`;
-        gameResult.innerText = `${record.isWin ? 'Win' : 'Lose'} in ${record.seconds} seconds with ${record.clicks} moves ${record.isWin ? '' : `and ${record.minesFound}/${record.mines} mines found `} on ${record.difficulty} difficulty`;
+        gameResult.innerText = `${record.isWin ? 'Win' : 'Lose'} in ${record.seconds} seconds with ${record.clicks} moves and ${record.mines} mines on ${record.difficulty} difficulty`;
         list.append(gameResult);
       });
     }
@@ -22,12 +22,11 @@ export default class GameResultsStorage {
     return board;
   }
 
-  static addGameResult(isWin, seconds, clicks, mines, difficulty, minesFound = mines) {
+  static addGameResult(isWin, seconds, clicks, mines, difficulty) {
     const gameResult = {
       isWin,
       seconds,
       clicks,
-      minesFound,
       mines,
       difficulty,
     };

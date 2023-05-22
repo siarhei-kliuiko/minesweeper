@@ -11,7 +11,8 @@
   row-gap: 15px;
   background: url(../../assets/images/game-background.jpg);
   color: $main-color;
-  animation: slide-in 1s;
+  animation: slide-in .5s;
+  user-select: none;
 }
 
 @keyframes slide-in {
@@ -35,4 +36,9 @@
 
 .message-box__text {
   font-size: 34px;
+}
+
+.message-box__buttons {
+  display: flex;
+  column-gap: 20px;
 }

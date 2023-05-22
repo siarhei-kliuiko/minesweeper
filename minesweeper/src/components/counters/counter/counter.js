@@ -34,7 +34,11 @@ class Counter {
     }
   }
 
-  reset() {
+  reset(newInitialValue) {
+    if (newInitialValue) {
+      this.initialValue = newInitialValue;
+    }
+
     this.set(this.initialValue);
   }
 }

@@ -6,6 +6,7 @@ import explosionSound from '../../assets/sounds/boom.mp3';
 import flagSound from '../../assets/sounds/flag.mp3';
 import breezeSound from '../../assets/sounds/breeze.mp3';
 import dogBarkSound from '../../assets/sounds/bark.mp3';
+import { GameSettings } from '../game-settings/game-settings';
 
 export const sounds = {
   gameStart: gameStartMusic,
@@ -19,7 +20,7 @@ export const sounds = {
 };
 
 export class SoundsRepository {
-  static isMuted = false;
+  static isMuted = !GameSettings.get().sounds;
 
   static createSound(sound) {
     const result = new Audio(sound);
@@ -31,3 +32,5 @@ export class SoundsRepository {
     SoundsRepository.isMuted = !SoundsRepository.isMuted;
   }
 }
+
+GameSettings.soundMuteChanged = SoundsRepository.toggleMute;
